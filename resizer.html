@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Adaptive Images</title>
+<style>
+body {
+}
+* {
+	box-sizing: border-box;
+}
+#main-image {
+	/* background-image: linear-gradient(#7cbfff,#1679bd); */
+	background-image: url('images/untitled.png');
+	/*background-position: center;*/
+	background-size: 100% 100%;
+	/*background-position: center;*/
+	/*background-attachment: fixed;*/
+	height: 450px;
+	width: 850px;
+	overflow: hidden;
+}
+.resizer {
+	background-color: transparent;
+	height: 200px;
+	width: 300px;
+	position: relative;
+	top: 35px;
+	left: 45px;
+}
+.bar {
+	position:absolute;
+	background-color: #1679bd;
+}
+.bar-w {
+	width: 2px;
+}
+.bar-h {
+	height: 2px;
+}
+.l-bar {
+	float: left;
+	left: 0px;
+	top: 0px;
+	height: 100%;
+}
+.t-bar {
+	float: left;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+}
+.r-bar {
+	float: right;
+	right: 0px;
+	bottom: 0px;
+	height: 100%;
+}
+.b-bar {
+	float: right;
+	bottom: 0px;
+	right: 0px;
+	width: 100%;
+}
+.point {
+	width: 5px;
+	height: 5px;
+	background-color: #1679bd;
+	position: absolute;
+}
+.point-l-t {
+	float: left;
+	top: -1.5px;
+	left: -1.5px;
+	cursor: nw-resize;
+}
+.point-l-b {
+	float: left;
+	bottom: -1.5px;
+	left: -1.5px;
+	cursor: sw-resize;
+}
+.point-r-b {
+	float: right;
+	cursor: se-resize;
+	bottom: -1.5px;
+	right: -1.5px;
+}
+.point-r-t {
+	float: right;
+	cursor: ne-resize;
+	top: -1.5px;
+	right: -1.5px;
+}
+.dashed-line {
+
+}
+</style>
+<script>
+var elem = null;
+var resizer_se = null;
+var a = null;
+var b = null;
+var c = null;
+var d = null;
+var mains = null;
+window.onload = function() {
+	mains = document.querySelector("#main-image");
+	a = document.querySelector("#a");
+	b = document.querySelector("#b");
+	c = document.querySelector("#c");
+	d = document.querySelector("#d");
+	elem = document.querySelector("#resizer");
+	resizer_se = document.querySelector("#point-r-b");
+	resizer_se.addEventListener( 'mousedown', function(e){
+		window.addEventListener( 'mousemove', resizeRB, false );
+		window.addEventListener( 'mouseup', removeresize, false );
+	}, false );
+}
+function resizeRB(e) {
+	var cw = elem.offsetLeft - mains.offsetLeft; /*elem.offsetLeft + mains.offsetWidth;*/
+	var dh = elem.offsetTop - mains.offsetTop;
+	var gg = cw + elem.offsetWidth;
+	var ff = dh + elem.offsetHeight
+	var f = e.clientX - elem.offsetLeft;
+	var g = e.clientY - elem.offsetTop;
+	a.innerHTML = cw;
+	b.innerHTML = dh;
+	c.innerHTML = e.clientX;
+	d.innerHTML = g;
+	if(gg < (mains.offsetWidth-5)) {
+		elem.style.width = f + 'px';
+	}else if(e.clientX < gg) {
+		elem.style.width = f + 'px';
+	}
+	if(ff < mains.offsetHeight) {
+		elem.style.height = g + 'px';
+	}else if(e.clientY < ff) {
+		elem.style.height = g + 'px';
+	}
+	/*elem.style.width = (e.clientX - elem.offsetLeft) + 'px';
+	elem.style.height = (e.clientY - elem.offsetTop) + 'px';*/
+}
+function removeresize(e) {
+	window.removeEventListener( 'mousemove', resizeRB );
+	window.removeEventListener( 'mouseup', removeresize );
+}
+</script>
+</head>
+<body>
+	<div id="main-image">
+		<div id="resizer" class="resizer">
+			<div class="dashed-line"></div>
+			<div class="dashed-line"></div>
+			<div class="dashed-line"></div>
+			<div class="dashed-line"></div>
+			<div class="dashed-line"></div>
+			<div class="dashed-line"></div>
+			<span class="bar bar-w l-bar"></span>
+			<span class="bar bar-h t-bar"></span>
+			<span class="bar bar-w r-bar"></span>
+			<span class="bar bar-h b-bar"></span>
+			<span class="point point-l-t"></span>
+			<span class="point point-l-b"></span>
+			<span class="point point-r-t"></span>
+			<span id="point-r-b" class="point point-r-b"></span>
+		</div>
+	</div>
+	<div>
+		<p id="a"></p>
+		<p id="b"></p>
+		<p id="c"></p>
+		<p id="d"></p>
+	</div>
+</body>
+</html>
